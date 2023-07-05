@@ -10,8 +10,18 @@ class Employee(models.Model):
         SOFTWARE_TESTER = "software tester"
         MANAGER = "manager"
 
-    name = models.CharField()
-    email = models.EmailField()
-    age = models.PositiveIntegerField(default=18, validators=[MinValueValidator(18)])
-    job_title = models.CharField(choices=JobTitles.choices)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    name = models.CharField("Full name of the employee", max_length=40)
+    email = models.EmailField("E-mail address of the employee")
+    age = models.PositiveIntegerField(
+        "Age of the employee, must be at least 18",
+        default=18,
+        validators=[MinValueValidator(18)],
+    )
+    job_title = models.CharField(
+        "Job title of the employee", choices=JobTitles.choices, max_length=20
+    )
+    company = models.ForeignKey(
+        Company,
+        verbose_name="Place of employment of the employee",
+        on_delete=models.CASCADE,
+    )
