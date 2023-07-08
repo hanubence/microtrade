@@ -5,7 +5,7 @@ from .EmployeeSerializer import EmployeeSerializer
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    employees = EmployeeSerializer(many=True)
+    employees = EmployeeSerializer(many=True, min_length=1, max_length=100)
 
     class Meta:
         model = Company
