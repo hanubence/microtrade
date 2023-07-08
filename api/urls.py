@@ -1,4 +1,6 @@
 from django.urls import path
-from api.views import CompanyListCreateView
+from api.views import CompanyView
 
-urlpatterns = [path("company/", CompanyListCreateView.as_view(), name="company")]
+urlpatterns = [
+    path("company/", CompanyView.as_view(), name="company"),
+]
