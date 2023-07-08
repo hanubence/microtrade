@@ -14,8 +14,6 @@ class CompanyListCreateView(ListCreateAPIView):
     def post(self, request):
         data = request.data
         data["company"]["employees"] = data.pop("employees")
-
-        print(data)
         company_serializer = CompanySerializer(data=data["company"])
 
         if company_serializer.is_valid(raise_exception=True):
