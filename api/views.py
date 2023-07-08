@@ -1,6 +1,9 @@
+from django.db.models import Q
+
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
-from django.db.models import Q
+
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from .models import Company
 from api.serializers import CompanySerializer
@@ -10,6 +13,22 @@ class CompanyView(ListCreateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="name",
+                description="Filter by company name or email address",
+                required=False,
+                type=str,
+            ),
+            OpenApiParameter(
+                name="order",
+                description="Order results by company field name",
+                required=False,
+                type=str,
+            ),
+        ]
+    )
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
