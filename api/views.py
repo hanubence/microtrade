@@ -6,12 +6,12 @@ from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from .models import Company
-from api.serializers import CompanySerializer
+from api.serializers import FullCompanySerializer, CompanySerializer
 
 
 class CompanyView(ListCreateAPIView):
     queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+    serializer_class = FullCompanySerializer
 
     @extend_schema(
         parameters=[
@@ -34,7 +34,7 @@ class CompanyView(ListCreateAPIView):
 
     def list(self, request):
         queryset = self.get_queryset()
-        serializer = CompanySerializer(queryset, many=True)
+        serializer = FullCompanySerializer(queryset, many=True)
         return Response(serializer.data)
 
     def get_queryset(self):
@@ -57,11 +57,9 @@ class CompanyView(ListCreateAPIView):
         return queryset
 
     def post(self, request):
-        data = request.data
-        data["company"]["employees"] = data.pop("employees")
-        company_serializer = CompanySerializer(data=data["company"])
+        company_serializer = FullCompanySerializer(data=request.data)
 
         if company_serializer.is_valid(raise_exception=True):
             company_serializer.save()
 
-        return Response(data)
+        return Response(request.data)
